@@ -17,9 +17,9 @@ class Login extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { dispatch, history } = this.props;
+    const { dispatch, navigation } = this.props;
     const { email, password } = this.state;
-    dispatch(handleLogin({ email, password }, history));
+    dispatch(handleLogin({ email, password }, navigation));
   }
 
   render() {
@@ -40,7 +40,7 @@ class Login extends Component {
         />
         <Button onPress={this.handleSubmit} title="Login">Submit</Button>
         <Button
-          onPress={() => this.props.history.push('/register')}
+          onPress={() => this.props.navigation.navigate('Register')}
           title='Register'
         />
       </React.Fragment>

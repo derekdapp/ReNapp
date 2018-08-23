@@ -14,9 +14,9 @@ class Register extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { email, password, passwordConfirmation } = this.state;
-    const { dispatch, history } = this.props;
+    const { dispatch, navigation } = this.props;
     if (password === passwordConfirmation) {
-      dispatch(registerUser({ email, password, passwordConfirmation }, history));
+      dispatch(registerUser({ email, password, passwordConfirmation }, navigation));
     } else dispatch(setFlash('Passwords do not match!, please try again', 'red'));
   }
 
@@ -48,7 +48,8 @@ class Register extends Component {
           onChangeText={(passwordConfirmation) => this.setState({passwordConfirmation})}
           value={password}
         />
-        <Button type='submit' onPress={this.handleSubmit} title='register'></Button>
+        <Button type='submit' onPress={this.handleSubmit} title='Submit Registration'></Button>
+        <Button onPress={() => this.props.navigation.goBack()} title='Login'></Button>
       </React.Fragment>
     );
   }

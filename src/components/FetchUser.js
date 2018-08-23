@@ -1,27 +1,46 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
-import { validateToken } from '../reducers/user';
+import { login } from '../reducers/user';
+import axios from 'axios'
 
 class FetchUser extends Component {
   state = { loaded: false };
 
-  componentDidMount() {
+  componentDidMount = async () => {
     const { isAuthenticated, dispatch } = this.props;
-    if (isAuthenticated) this.loaded();
-    else dispatch(validateToken(this.loaded));
+    if (isAuthenticated) {
+      this.continueToApp()
+    } else {
+      const hasToken = await this.checkLocalToken()
+      if (hasToken) {
+        axios.get('http://localhost:3001/api/auth/validate_token')
+          .then( async res => {
+            await dispatch(login(res.data.data))
+            this.continueToApp()
+          }).catch( (err) => { 
+            this.sendToLogin() } )
+      } else {
+        this.sendToLogin();
+      }
+    }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (!this.state.loaded) this.loaded();
+  checkLocalToken = async () => {
+    const token = await AsyncStorage.getItem('access-token')
+    return token
   }
 
-  loaded = () => {
-    this.setState({ loaded: true });
+  continueToApp = () => {
+    this.props.navigation.navigate('App');
+  }
+
+  sendToLogin = () => {
+    this.props.navigation.navigate('Login');
   }
 
   render() {
-    return this.state.loaded ? this.props.children : <View><Text>Not loaded</Text></View>;
+    return <View><Text>Loading</Text></View>;
   }
 }
 
