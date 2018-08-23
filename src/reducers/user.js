@@ -1,15 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 import { setFlash } from './flash';
-import { setHeaders } from './headers';
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
-import { getTokens } from 'redux-devise-axios-native';
 import {
   Alert,
 } from 'react-native';
 
-const login = (user) => {
+export const login = (user) => {
   return { type: LOGIN, user };
 }
 
@@ -17,35 +15,30 @@ const logout = () => {
   return { type: LOGOUT };
 }
 
-export const registerUser = (user, history) => {
+export const registerUser = (user, navigation) => {
   return (dispatch) => {
     axios.post('http://localhost:3001/api/auth', user)
     .then( (res) => {      
-      const { data: { data: user }, headers } = res;
-      dispatch(setHeaders(headers));
+      const { data: { data: user }} = res;
       dispatch(login(user));
-      history.push('/')
+      navigation.navigate('App');
     })
     .catch( res => {
       const messages =
         res.response.data.errors.full_messages.map(message =>
           <div>{message}</div>);
-        const { headers } = res;
-        dispatch(setHeaders(headers));
         dispatch(setFlash(messages, 'red'));
     })
   }
 }
 
-export const handleLogout = history => {
+export const handleLogout = navigation => {
   return (dispatch) => {
     axios.delete('http://localhost:3001/api/auth/sign_out')
       .then(res => {
-        const { headers } = res;
-        dispatch(setHeaders(headers));
         dispatch(logout());
         dispatch(setFlash('Logged out successfully!', 'green'));
-        history.push('/login');
+        navigation.navigate('Login');
       })
       .catch(res => {
         let errors = res.response.data.errors ? res.response.data.errors : ['Something went wrong']
@@ -54,21 +47,18 @@ export const handleLogout = history => {
         const messages =
           errors.map( (message, i) =>
             <div key={i}>{message}</div>);
-        const { headers } = res;
-        dispatch(setHeaders(headers));
         dispatch(setFlash(messages, 'red'));
       });
   };
 };
 
-export const handleLogin = (user, history) => {
+export const handleLogin = (user, navigation) => {
   return (dispatch) => {
     axios.post('http://localhost:3001/api/auth/sign_in', user)
       .then(res => {
-        const { data: { data: user }, headers } = res;
-        dispatch(setHeaders(headers));
+        const { data: { data: user }} = res;
         dispatch(login(user));
-        history.push('/');
+        navigation.navigate('App');
       })
       .catch(res => {
         let errors = res.response.data.errors ? res.response.data.errors : ['Something went wrong']
@@ -77,25 +67,8 @@ export const handleLogin = (user, history) => {
         const messages =
           errors.map( (message, i) =>
             <div key={i}>{message}</div>);
-        const { headers } = res;
-        dispatch(setHeaders(headers));
         dispatch(setFlash(messages, 'red'));
-      });
-  };
-};
-
-export const validateToken = (callBack = () => {}) => {
-  return async (dispatch) => {
-    let headers = await getTokens()
-    headers = {...axios.defaults.headers.common, ...headers}
-    axios.defaults.headers.common = headers
-    axios.get(`http://localhost:3001/api/auth/validate_token`, headers)
-      .then(res => {
-        const user = res.data.data;
-        dispatch({ type: LOGIN, user, headers: res.headers })
-      })
-      .catch((err) => {
-        callBack()
+        navigation.navigate('Login');
       });
   };
 };
@@ -110,4 +83,3 @@ export default (state = {}, action) => {
     return state;
   }
 };
-
