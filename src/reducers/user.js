@@ -21,7 +21,7 @@ export const registerUser = (user, navigation) => {
     .then( (res) => {      
       const { data: { data: user }} = res;
       dispatch(login(user));
-      navigation.navigate('App');
+      navigation.navigate('AppStack');
     })
     .catch( res => {
       const messages =
@@ -58,7 +58,7 @@ export const handleLogin = (user, navigation) => {
       .then(res => {
         const { data: { data: user }} = res;
         dispatch(login(user));
-        navigation.navigate('App');
+        navigation.navigate('AppStack');
       })
       .catch(res => {
         let errors = res.response.data.errors ? res.response.data.errors : ['Something went wrong']

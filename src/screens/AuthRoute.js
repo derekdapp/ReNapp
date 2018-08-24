@@ -1,5 +1,4 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-native';
 import { connect } from 'react-redux';
 
 const AuthRoute = ({ isAuthenticated, component: Component, ...rest }) => (
