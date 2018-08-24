@@ -32,7 +32,7 @@ class FetchUser extends Component {
   }
 
   continueToApp = () => {
-    this.props.navigation.navigate('App');
+    this.props.navigation.navigate('AppStack');
   }
 
   sendToLogin = () => {

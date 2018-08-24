@@ -1,5 +1,4 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-native';
 import { connect } from 'react-redux';
 
 const ProtectedRoute = ({ isAuthenticated, component: Component, ...rest }) => (
