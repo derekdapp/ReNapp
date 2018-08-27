@@ -5,9 +5,7 @@ import FetchUser from './src/screens/FetchUser';
 import { Provider } from 'react-redux';
 import { StyleSheet, StatusBar, StyleProvider, View, AsyncStorage } from 'react-native';
 import { initMiddleware } from 'devise-axios';
-import { ThemeProvider, ThemeConsumer } from './src/theme'
-
-
+import { ThemeProvider, ThemeConsumer } from './src/theme';
 
 export default class App extends React.Component {
   constructor(props) {
