@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {NavigationActions} from 'react-navigation';
 import {
   ScrollView, 
   Text, 
@@ -7,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity
 } from 'react-native';
+import { ListItem } from 'react-native-elements'
 
 class SideMenu extends Component {
   navigateToScreen = (route) => {
@@ -18,16 +18,16 @@ class SideMenu extends Component {
     return (
       <View style={styles.container}>
         <ScrollView>
-          <TouchableOpacity onPress={() => this.navigateToScreen('Home')}>
-            <Text style={styles.sectionHeadingStyle}>
-              Home
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.navigateToScreen('ScreenOne')}>
-            <Text style={styles.sectionHeadingStyle}>
-              Screen One
-            </Text>
-          </TouchableOpacity>
+          <ListItem
+            title='Home'
+            leftIcon={{ name: 'home' }}
+            onPress={() => this.navigateToScreen('Home')}
+          />
+          <ListItem
+            title='Screen One'
+            leftIcon={{ name: 'cached' }}
+            onPress={() => this.navigateToScreen('ScreenOne')}
+          />
         </ScrollView>
         <View style={styles.footerContainer}>
           <Text>footer power</Text>

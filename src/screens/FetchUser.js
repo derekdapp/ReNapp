@@ -14,7 +14,7 @@ class FetchUser extends Component {
     } else {
       const hasToken = await this.checkLocalToken()
       if (hasToken) {
-        axios.get('http://localhost:3001/api/auth/validate_token')
+        axios.get('/api/auth/validate_token')
           .then( async res => {
             await dispatch(login(res.data.data))
             this.continueToApp()
