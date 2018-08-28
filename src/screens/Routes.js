@@ -8,6 +8,7 @@ import ModalScreen from './ModalScreen';
 import FetchUser from './FetchUser';
 import ScreenOne from './ScreenOne';
 import SideMenu from './SideMenu';
+import FlashMessage from "react-native-flash-message";
 import {
   ActivityIndicator,
   AsyncStorage,
@@ -40,11 +41,12 @@ function createRootStack(theme) {
             //Home Stack Options
             initialRouteName: 'Home',
             cardStyle: {
-              backgroundColor: theme.backgroundColor
+              backgroundColor: theme.colors.screen.base
             },
             navigationOptions: {
               headerStyle: {
-                backgroundColor: theme.primaryColor,
+                backgroundColor: theme.colors.primary,
+                minHeight: 40
               },
               headerTintColor: '#fff',
               headerTitleStyle: {
@@ -61,15 +63,15 @@ function createRootStack(theme) {
       }, {
         mode: 'modal',
         headerMode: 'none',
+        cardStyle: {
+          backgroundColor: theme.colors.screen.base
+        },
       }),
     }, {
       headerMode: 'none',
     }),
   }, {
     initialRouteName: 'FetchUser',
-    cardStyle: {
-      backgroundColor: 'green'
-    }
   });
   return RootStack;
 }
@@ -81,6 +83,7 @@ class Routes extends React.Component {
     return (
       <View style={{ flex: 1, backgroundColor: 'white'}} >
         <RootStack />
+        <FlashMessage position="top" />
       </View>
     );
   }

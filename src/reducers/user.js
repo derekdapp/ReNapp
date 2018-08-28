@@ -6,6 +6,7 @@ const LOGOUT = 'LOGOUT';
 import {
   Alert,
 } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 
 export const login = (user) => {
   return { type: LOGIN, user };
@@ -15,60 +16,60 @@ const logout = () => {
   return { type: LOGOUT };
 }
 
-export const registerUser = (user, navigation) => {
+export const registerUser = (user, navigation, cb = () => {}) => {
   return (dispatch) => {
-    axios.post('http://localhost:3001/api/auth', user)
+    axios.post('/api/auth', user)
     .then( (res) => {      
       const { data: { data: user }} = res;
       dispatch(login(user));
       navigation.navigate('AppStack');
     })
     .catch( res => {
-      const messages =
-        res.response.data.errors.full_messages.map(message =>
-          <div>{message}</div>);
-        dispatch(setFlash(messages, 'red'));
+      cb();
+      const errors = res.response.data.errors;
+      const messages = errors ? Array.from(new Set(res.response.data.errors.full_messages)).join('\n') : 'Something went wrong';
+      showMessage({
+        message: messages,
+        type: "danger",
+      });
     })
   }
 }
 
 export const handleLogout = navigation => {
   return (dispatch) => {
-    axios.delete('http://localhost:3001/api/auth/sign_out')
+    axios.delete('/api/auth/sign_out')
       .then(res => {
         dispatch(logout());
         dispatch(setFlash('Logged out successfully!', 'green'));
         navigation.navigate('Login');
       })
       .catch(res => {
-        let errors = res.response.data.errors ? res.response.data.errors : ['Something went wrong']
-        if (!Array.isArray(errors))
-          errors = [errors]
-        const messages =
-          errors.map( (message, i) =>
-            <div key={i}>{message}</div>);
-        dispatch(setFlash(messages, 'red'));
+        let errors = res.response.data.errors ? res.response.data.errors.join('\n') : 'Something went wrong.'
+        showMessage({
+          message: errors,
+          type: "danger",
+        });
       });
   };
 };
 
-export const handleLogin = (user, navigation) => {
+export const handleLogin = (user, navigation, cb = () => {}) => {
   return (dispatch) => {
-    axios.post('http://localhost:3001/api/auth/sign_in', user)
+    axios.post('/api/auth/sign_in', user)
       .then(res => {
-        const { data: { data: user }} = res;
+        const user = res.data.data;
         dispatch(login(user));
         navigation.navigate('AppStack');
       })
       .catch(res => {
-        let errors = res.response.data.errors ? res.response.data.errors : ['Something went wrong']
-        if (!Array.isArray(errors))
-          errors = [errors]
-        const messages =
-          errors.map( (message, i) =>
-            <div key={i}>{message}</div>);
-        dispatch(setFlash(messages, 'red'));
-        navigation.navigate('Login');
+        cb();
+        var errors = res.response.data.errors;
+        const messages = errors ? errors.join('\n') : 'Something went wrong.';
+        showMessage({
+          message: messages,
+          type: "danger",
+        });
       });
   };
 };

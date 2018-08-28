@@ -1,12 +1,15 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text } from 'react-native';
+import {
+  ThemedButton
+} from '../components'
 
 export default class ScreenOne extends React.Component {
   render(){
     return(
       <View>
         <Text>This is screen one.</Text>
-        <Button title='Open Drawer' onPress={() => this.props.navigation.openDrawer()}></Button>
+        <ThemedButton title='Open Drawer' onPress={() => this.props.navigation.openDrawer()} />
       </View>
     )
   }
