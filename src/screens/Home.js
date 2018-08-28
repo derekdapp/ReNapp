@@ -2,10 +2,8 @@ import React from 'react';
 import {
   View,
   ScrollView,
-  TouchableHighlight
 } from 'react-native';
 import {
-  Icon,
   Button
 } from 'react-native-elements';
 import { connect } from 'react-redux';
