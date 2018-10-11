@@ -1,7 +1,8 @@
 import React from 'react';
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, StatusBar, Platform } from "react-native";
 import lightTheme from './lightTheme';
 import darkTheme from './darkTheme';
+var Color = require('color');
 
 const ThemeContext = React.createContext('theme');
 export const ThemeConsumer = ThemeContext.Consumer;
@@ -49,9 +50,7 @@ const reducer = (state, action) => {
 export class ThemeProvider extends React.Component {
   state = {
     ready: false,
-    theme: {
-      ...lightTheme
-    },
+    theme: {},
     dispatch: action => {
       this.setState(state => reducer(state, action));
     }
@@ -60,6 +59,15 @@ export class ThemeProvider extends React.Component {
   async componentDidMount(){
     this.state.dispatch({ type: "SET_THEME_BY_NAME", name: await getThemeName() })
     this.setState({ ready: true });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if ( prevState.theme.name !== this.state.theme.name ) {
+      if(Platform.OS === 'android'){
+        var color = Color(this.state.theme.colors.primary).darken(0.2);
+        StatusBar.setBackgroundColor(color.hex(), true)
+      }
+    }
   }
 
   render() {
