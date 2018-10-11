@@ -7,7 +7,7 @@ const Colors = {
   warning: '#F09D51',
   danger: '#96031A',
   background: '#02111B',
-  foreground: '#FFFFFF',
+  foreground: '#000000',
 
   alterForeground: '#707070',
   inverseForeground: '#ffffff',
@@ -44,10 +44,11 @@ export default {
     facebook: Colors.facebook,
     brand: Colors.accent,
     text: {
-      base: Colors.foreground,
-      secondary: Colors.secondaryForeground,
+      primary: Colors.primary,
+      base: Colors.foreground, //black
+      secondary: Colors.secondaryForeground, //grey
       accent: Colors.accent,
-      inverse: Colors.inverseForeground,
+      inverse: Colors.inverseForeground, //white
       hint: Colors.alterForeground,
     },
     input: {

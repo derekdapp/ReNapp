@@ -1,6 +1,6 @@
 const Colors = {
   accent: '#FFFFFF',
-  primary: '#4392F1',
+  primary: '#72C086',
   success: '#9BC53D',
   disabled: '#BFBDC1',
   info: '#19bfe5',
@@ -44,10 +44,11 @@ export default {
     facebook: Colors.facebook,
     brand: Colors.accent,
     text: {
-      base: Colors.foreground,
-      secondary: Colors.secondaryForeground,
+      primary: Colors.primary,
+      base: Colors.foreground, //black
+      secondary: Colors.secondaryForeground, //grey
       accent: Colors.accent,
-      inverse: Colors.inverseForeground,
+      inverse: Colors.inverseForeground, //white
       hint: Colors.alterForeground,
     },
     input: {
